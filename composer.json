@@ -1,6 +1,7 @@
 {
 	"name": "aurora-framework/profiler",
 	"license": "MIT",
+	"description": "Simple profiler",
 	"minimum-stability": "dev",
 	"authors": [
 		{
