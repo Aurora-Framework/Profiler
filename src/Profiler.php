@@ -1,5 +1,8 @@
 <?php
 
+namespace Aurora;
+
+use Aurora\Profiler\Exception\MissingPointException;
 
 class Profiler
 {
@@ -8,7 +11,7 @@ class Profiler
    public function start($point, $time = true, $memory = true)
    {
       if (!($time || $memory)) {
-         throw new MissingPointException;
+         throw new MissingPointDataException("Point ${point} has no data to work with, time or memory should be present");
       }
       $data = [];
 
@@ -25,8 +28,9 @@ class Profiler
    public function end($point)
    {
       if (!isset($this->points[$point])) {
-         throw new PointNotFoundException();
+         throw new PointNotFoundException("Point ${point} wasn't found");
       }
+
       if (isset($this->points[$point]["start"]["time"])) {
          $data["end"]["time"] = microtime();
       } else {
@@ -39,7 +43,7 @@ class Profiler
    public function difference($point, $secondPoint = null)
    {
       if (!isset($this->points[$point])) {
-         throw new PointNotFoundException();
+         throw new PointNotFoundException("Point ${point} wasn't found");
       }
 
       if ($secondPoint === null) {
@@ -53,7 +57,7 @@ class Profiler
       } else {
          $difference["time"] = $this->points[$point]["start"]["memory"] - $this->points[$secondPoint]["start"]["memory"];
       }
-      
+
       return $difference;
    }
 }
